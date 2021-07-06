@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
+package com.example.androiddevchallenge.ui.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -51,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.data.DataProvider
 import com.example.androiddevchallenge.data.model.Puppy
 import com.example.androiddevchallenge.ui.theme.purple500
@@ -106,7 +107,7 @@ private fun ProfileHeader(
 @Composable
 private fun ProfileContent(puppy: Puppy, containerHeight: Dp) {
     Column {
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))  // TODO - put a space
 
         Name(puppy)
 
@@ -171,7 +172,7 @@ fun ProfileProperty(label: String, value: String, isLink: Boolean = false) {
 @Composable
 fun AdoptFab(extended: Boolean, modifier: Modifier = Modifier) {
     FloatingActionButton(
-        onClick = { /* TODO */ },
+        onClick = { /* Do nothing yet */ },
         modifier = modifier
             .padding(16.dp)
             .padding()

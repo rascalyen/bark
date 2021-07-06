@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
+package com.example.androiddevchallenge.ui.profile
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -53,7 +53,7 @@ fun AnimatingFabContent(
                     durationMillis = (transitionDuration / 12f * 5).roundToInt() // 5 / 12 frames
                 )
             }
-        }
+        },
     ) { progress ->
         if (progress == ExpandableFabStates.Collapsed) {
             0f

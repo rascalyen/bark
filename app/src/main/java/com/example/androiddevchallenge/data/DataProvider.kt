@@ -17,6 +17,7 @@ package com.example.androiddevchallenge.data
 
 import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.data.model.Puppy
+import kotlin.random.Random
 
 object DataProvider {
 
@@ -30,7 +31,7 @@ object DataProvider {
             puppyImageId = R.drawable.p1
         )
 
-    val puppyList = listOf(
+    private val puppyList = listOf(
         puppy,
         Puppy(
             id = 2,
@@ -119,6 +120,12 @@ object DataProvider {
             age = 14,
             description = "Stella! Calm and always up for a challenge, she's the perfect companion.",
             puppyImageId = R.drawable.p12
-        ),
+        )
     )
+
+    val threePuppies = puppyList.subList(0, 3)
+
+    val randomPuppy = puppyList.random()
+
+    val randomPuppyList = mutableListOf<Puppy>().apply { add(puppyList.random()) }
 }
