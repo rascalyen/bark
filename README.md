@@ -16,7 +16,7 @@ https://github.com/rascalyen/bark/blob/demo/demo/device-2021-07-08-094803.mp4
 
 ## Getting started
 Copy this repository by pressing the "Use this template" button in Github.
-Clone your repository and open it in the latest [Android Studio (Canary build)](https://developer.android.com/studio/preview).
+Clone your repository and open it in the latest [Android Studio (Beta build)](https://developer.android.com/studio/preview).
 
 ## Submission requirements
 - Follow the challenge description on the project website: [developer.android.com/dev-challenge](https://developer.android.com/dev-challenge)
