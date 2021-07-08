@@ -8,8 +8,7 @@ Part II: https://www.waseefakhtar.com/android/jetpack-compose-styles-and-themes/
 Part III: https://www.waseefakhtar.com/android/jetpack-compose-navigating-to-a-detail-view/
 
 ## Screenshots
-
-<img src="https://github.com/waseefakhtar/bark/blob/main/screenshots/device-2021-02-27-190633.png?raw=true" width="200"/> <img src="https://github.com/waseefakhtar/bark/blob/main/screenshots/device-2021-02-27-190647.png?raw=true" width="200"/>
+<img src="https://github.com/rascalyen/bark/blob/demo/screenshots/20210708-092825.png?raw=true" width="200"/> <img src="https://github.com/waseefakhtar/bark/blob/main/screenshots/device-2021-02-27-190647.png?raw=true" width="200"/>
 
 ## Demo
 
