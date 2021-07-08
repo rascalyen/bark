@@ -38,6 +38,8 @@ class BarkViewModel : ViewModel() {
     loadPuppiesOldWay { barkService.getAllPuppiesFlow() }
 
     //loadPuppiesFlowWay { barkService.getFirstThreePuppiesFlow() }
+
+    //handleBarkEvents(BarkEvent.InitialWoofEvent)
   }
 
   private fun loadPuppiesOldWay(block: suspend () -> Flow<List<Puppy>>): Job {
