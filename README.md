@@ -12,7 +12,7 @@ Part III: https://www.waseefakhtar.com/android/jetpack-compose-navigating-to-a-d
 
 ## Demo
 
-https://github.com/waseefakhtar/bark/blob/main/demo/device-2021-02-27-180752.mp4
+https://github.com/rascalyen/bark/blob/demo/demo/device-2021-07-08-094803.mp4
 
 ## Getting started
 Copy this repository by pressing the "Use this template" button in Github.
