@@ -17,11 +17,10 @@ package com.example.androiddevchallenge.data
 
 import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.data.model.Puppy
-import kotlin.random.Random
 
 object DataProvider {
 
-    val puppy =
+    val puppyOne =
         Puppy(
             id = 1,
             title = "Monty",
@@ -31,8 +30,7 @@ object DataProvider {
             puppyImageId = R.drawable.p1
         )
 
-    private val puppyList = listOf(
-        puppy,
+    val puppyTwo =
         Puppy(
             id = 2,
             title = "Jubilee",
@@ -40,7 +38,11 @@ object DataProvider {
             age = 6,
             description = "Jubilee enjoys thoughtful discussions by the campfire.",
             puppyImageId = R.drawable.p2
-        ),
+        )
+
+    val puppyList = listOf(
+        puppyOne,
+        puppyTwo,
         Puppy(
             id = 3,
             title = "Beezy",
@@ -125,7 +127,5 @@ object DataProvider {
 
     val threePuppies = puppyList.subList(0, 3)
 
-    val randomPuppy = puppyList.random()
-
-    val randomPuppyList = mutableListOf<Puppy>().apply { add(puppyList.random()) }
+    val randomPuppyList = arrayListOf<Puppy>().apply { add(puppyList.random()) }
 }

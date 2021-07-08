@@ -57,7 +57,7 @@ import com.example.androiddevchallenge.data.model.Puppy
 import com.example.androiddevchallenge.ui.theme.purple500
 
 @Composable
-fun ProfileScreen(puppy: Puppy, onNavIconPressed: () -> Unit = { }) {
+fun ProfileScreen(puppy: Puppy) {
     val scrollState = rememberScrollState()
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -202,6 +202,6 @@ fun AdoptFab(extended: Boolean, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun ProfilePreview() {
-    val puppy = DataProvider.puppy
+    val puppy = DataProvider.puppyOne
     ProfileScreen(puppy = puppy)
 }

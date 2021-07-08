@@ -18,20 +18,31 @@ package com.example.androiddevchallenge.ui.main
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androiddevchallenge.data.model.Puppy
 import com.example.androiddevchallenge.ui.profile.ProfileActivity
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var barkViewModel: BarkViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        barkViewModel = BarkViewModel()
+
         setContent {
             MyTheme {
-                MyApp {
+                MyApp(barkViewModel) {
                     startActivity(ProfileActivity.newIntent(this, it))
                 }
             }
@@ -40,11 +51,18 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun MyApp(navigateToProfile: (Puppy) -> Unit) {
+fun MyApp(barkVM: BarkViewModel, navigateToProfile: (Puppy) -> Unit) {
     Scaffold(  // TODO - 1. it's a material design layout
 
         content = {
-            BarkHomeContent(navigateToProfile = navigateToProfile)
+            Box(contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()) {
+                LoadingCircle(barkVM.spinner.observeAsState())
+            }
+            BarkHomeContent(
+                puppyListState = barkVM.puppies.observeAsState(),
+                //puppyListState = barkVM.puppyFlow.collectAsState(),
+                navigateToProfile = navigateToProfile)
         },
         floatingActionButton = {
             BarkFab()
@@ -56,7 +74,7 @@ fun MyApp(navigateToProfile: (Puppy) -> Unit) {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp { }
+        MyApp(BarkViewModel()) { }
     }
 }
 
@@ -64,6 +82,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp { }
+        MyApp(BarkViewModel()) { }
     }
 }

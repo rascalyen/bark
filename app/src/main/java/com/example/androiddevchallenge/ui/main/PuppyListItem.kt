@@ -43,14 +43,14 @@ import com.example.androiddevchallenge.ui.theme.darkGraySurface
 import com.example.androiddevchallenge.ui.theme.typography
 
 @Composable
-fun PuppyListItem(puppy: Puppy, navigateToProfile: (Puppy) -> Unit,) {
+fun PuppyListItem(puppy: Puppy, navigateToProfile: (Puppy) -> Unit) {
     Card(
         modifier = Modifier  // TODO - 3. Modifier builder provides modification to compose component
             .padding(horizontal = 0.dp, vertical = 8.dp)
             .fillMaxWidth(),
         elevation = 0.dp
     ) {
-        // TODO - 4. Modifier clickable fun
+        // TODO - 4. Modifier clickable function
         Row(Modifier.clickable { navigateToProfile(puppy) }) {
             PuppyImage(puppy)
             PuppyWoof(puppy)
@@ -92,7 +92,14 @@ private fun PuppyImage(puppy: Puppy) {
 
 @Preview
 @Composable
-fun PreviewPuppyItem() {
-    val puppy = DataProvider.puppy
+fun PreviewPuppyOne() {
+    val puppy = DataProvider.puppyOne
+    PuppyListItem(puppy = puppy, navigateToProfile = {})
+}
+
+@Preview
+@Composable
+fun PreviewPuppyTwo() {
+    val puppy = DataProvider.puppyTwo
     PuppyListItem(puppy = puppy, navigateToProfile = {})
 }
