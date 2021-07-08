@@ -18,6 +18,7 @@ package com.example.androiddevchallenge.ui.main
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -32,12 +34,17 @@ import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.data.model.Puppy
 import com.example.androiddevchallenge.ui.theme.purple500
+import kotlinx.coroutines.launch
 
 @Composable
 fun BarkHomeContent(puppyListState: State<List<Puppy>?>, navigateToProfile: (Puppy) -> Unit) {
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+
     // TODO - 2. compose version of recyclerView
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        state = listState,
+        contentPadding = PaddingValues(16.dp, 8.dp, 16.dp, 40.dp)
     ) {
         items(
             items = puppyListState.value.orEmpty(),
@@ -45,6 +52,10 @@ fun BarkHomeContent(puppyListState: State<List<Puppy>?>, navigateToProfile: (Pup
                 PuppyListItem(puppy = it, navigateToProfile)
             }
         )
+
+        scope.launch {
+            listState.animateScrollToItem(Int.MAX_VALUE)
+        }
     }
 }
 
@@ -54,9 +65,9 @@ fun LoadingCircle(loadingState: State<Boolean?>) {
 }
 
 @Composable
-fun BarkFab() {
+fun BarkFab(barkVM: BarkViewModel) {
     FloatingActionButton(
-        onClick = { /* TODO - ADD one woof */ },
+        onClick = { barkVM.handleBarkEvents(BarkEvent.WoofEvent) },
         modifier = Modifier
             .padding(16.dp)
             .padding()

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,17 +56,17 @@ fun MyApp(barkVM: BarkViewModel, navigateToProfile: (Puppy) -> Unit) {
     Scaffold(  // TODO - 1. it's a material design layout
 
         content = {
-            Box(contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()) {
-                LoadingCircle(barkVM.spinner.observeAsState())
-            }
             BarkHomeContent(
                 puppyListState = barkVM.puppies.observeAsState(),
                 //puppyListState = barkVM.puppyFlow.collectAsState(),
                 navigateToProfile = navigateToProfile)
+            Box(contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()) {
+                LoadingCircle(barkVM.spinner.observeAsState())
+            }
         },
         floatingActionButton = {
-            BarkFab()
+            BarkFab(barkVM)
         }
     )
 }

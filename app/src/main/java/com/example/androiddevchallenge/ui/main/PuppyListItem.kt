@@ -19,16 +19,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -50,25 +47,36 @@ fun PuppyListItem(puppy: Puppy, navigateToProfile: (Puppy) -> Unit) {
             .fillMaxWidth(),
         elevation = 0.dp
     ) {
-        // TODO - 4. Modifier clickable function
-        Row(Modifier.clickable { navigateToProfile(puppy) }) {
-            PuppyImage(puppy)
-            PuppyWoof(puppy)
+        if (puppy.id % 2 != 0) {
+            // TODO - 4. Modifier clickable function
+            Row(Modifier.clickable { navigateToProfile(puppy) }) {
+                PuppyLeftImage(puppy)
+                PuppyLeftWoof(puppy)
+            }
+        }
+        else {
+            Row(modifier = Modifier.clickable { navigateToProfile(puppy) },
+                horizontalArrangement = Arrangement.End
+            ) {
+                PuppyRightWoof(puppy)
+                PuppyRightImage(puppy)
+            }
         }
     }
 }
 
 @Composable
-private fun PuppyWoof(puppy: Puppy) {
+private fun PuppyRightWoof(puppy: Puppy) {
     Column(
+        horizontalAlignment = Alignment.End,
         modifier = Modifier
+            .requiredWidth(300.dp)  // TODO - 7. need to figure out how to apply constraints
             .padding(4.dp, 8.dp, 8.dp, 8.dp)
-            .fillMaxWidth()
-            //.align(Alignment.CenterVertically)
+            .wrapContentWidth()
             .background(
-                color = if (isSystemInDarkTheme()) darkGraySurface  // TODO - 5. you can also pre-construct Color variables.
+                color = if (isSystemInDarkTheme()) darkGraySurface
                 else colorResource(R.color.light_grey),
-                shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 16.dp)
+                shape = RoundedCornerShape(16.dp, 0.dp, 16.dp, 16.dp)
             )
     ) {
         Text(text = puppy.description,
@@ -78,7 +86,7 @@ private fun PuppyWoof(puppy: Puppy) {
 }
 
 @Composable
-private fun PuppyImage(puppy: Puppy) {
+private fun PuppyRightImage(puppy: Puppy) {
     Image(
         painter = painterResource(id = puppy.puppyImageId),
         contentDescription = null,
@@ -89,6 +97,38 @@ private fun PuppyImage(puppy: Puppy) {
             .clip(CircleShape)
     )
 }
+
+@Composable
+private fun PuppyLeftWoof(puppy: Puppy) {
+    Column(
+        modifier = Modifier
+            .padding(4.dp, 8.dp, 8.dp, 8.dp)
+            .fillMaxWidth()
+            .background(
+                color = if (isSystemInDarkTheme()) darkGraySurface  // TODO - 5. you can also pre-construct Color variables.
+                        else colorResource(R.color.light_grey),
+                shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 16.dp)
+            )
+    ) {
+        Text(text = puppy.description,
+            style = typography.h6,
+            modifier = Modifier.padding(8.dp))
+    }
+}
+
+@Composable
+private fun PuppyLeftImage(puppy: Puppy) {
+    Image(
+        painter = painterResource(id = puppy.puppyImageId),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .padding(8.dp)
+            .size(50.dp)
+            .clip(CircleShape)
+    )
+}
+
 
 @Preview
 @Composable

@@ -107,7 +107,7 @@ private fun ProfileHeader(
 @Composable
 private fun ProfileContent(puppy: Puppy, containerHeight: Dp) {
     Column {
-        Spacer(modifier = Modifier.height(8.dp))  // TODO - put a space
+        Spacer(modifier = Modifier.height(8.dp))
 
         Name(puppy)
 

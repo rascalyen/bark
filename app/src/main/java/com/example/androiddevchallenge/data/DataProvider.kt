@@ -127,5 +127,5 @@ object DataProvider {
 
     val threePuppies = puppyList.subList(0, 3)
 
-    val randomPuppyList = arrayListOf<Puppy>().apply { add(puppyList.random()) }
+    fun randomPuppy() = puppyList.random()
 }

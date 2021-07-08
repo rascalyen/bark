@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androiddevchallenge.data.BarkService
 import com.example.androiddevchallenge.data.BarkServiceImpl
+import com.example.androiddevchallenge.data.DataProvider
 import com.example.androiddevchallenge.data.model.Puppy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -23,7 +24,7 @@ class BarkViewModel : ViewModel() {
   val spinner: LiveData<Boolean>
     get() = _spinner
 
-  //private val _puppies = MutableLiveData<List<Puppy>>(DataProvider.puppyList)    // for preview
+  //private val _puppies = MutableLiveData(DataProvider.puppyList)    // for preview
   private val _puppies = MutableLiveData<List<Puppy>>(mutableListOf())
   val puppies: LiveData<List<Puppy>>
     get() = _puppies
@@ -34,29 +35,10 @@ class BarkViewModel : ViewModel() {
 
 
   init {
-    //loadPuppiesOldWay { barkService.getAllPuppiesFlow() }
+    loadPuppiesOldWay { barkService.getAllPuppiesFlow() }
 
-    loadPuppiesFlowWay { barkService.getAllPuppiesFlow() }
+    //loadPuppiesFlowWay { barkService.getFirstThreePuppiesFlow() }
   }
-
-  @ExperimentalCoroutinesApi
-  private fun loadPuppiesFlowWay(block: suspend () -> Flow<List<Puppy>>) {
-    _puppyFlow.mapLatest {
-      _spinner.value = true
-      block()
-    }
-      //.flowOn(Dispatchers.IO)
-      .onStart { /* Do sth before transformation. in this case: mapLatest */ }
-      .onEach { /* Do sth in between each data emission and transformation */
-        _spinner.value = false
-      }
-      .onCompletion { /* Do sth when entire transformation is done. */ }
-      .catch {
-        _spinner.value = false
-      }
-      .launchIn(viewModelScope)
-  }
-
 
   private fun loadPuppiesOldWay(block: suspend () -> Flow<List<Puppy>>): Job {
 
@@ -67,6 +49,7 @@ class BarkViewModel : ViewModel() {
         block()
           .collect {
             _puppies.value = it
+            _puppyFlow.value = it
           }
       } catch (error: Throwable) {
         _spinner.value = false
@@ -76,4 +59,45 @@ class BarkViewModel : ViewModel() {
     }
   }
 
+  @ExperimentalCoroutinesApi
+  private fun loadPuppiesFlowWay(block: suspend () -> Flow<List<Puppy>>): Job {
+
+    return viewModelScope.launch {
+      block()
+        .onStart { _spinner.value = true }
+        .catch { _spinner.value = false }
+        .onCompletion { _spinner.value = false }
+        .collect {
+          _puppies.value = it
+          _puppyFlow.value = it
+        }
+    }
+  }
+
+
+  fun handleBarkEvents(event: BarkEvent) {
+
+    when (event) {
+      is BarkEvent.SelectOptionEvent -> { /* Nothing to do yet */  }
+
+      is BarkEvent.WoofEvent -> { addOneBark() }
+    }
+  }
+
+  private fun addOneBark() {
+    viewModelScope.launch {
+      barkService.getRandomPuppyFlow()
+        .onStart { _spinner.value = true }
+        .catch { _spinner.value = false }
+        .onCompletion { _spinner.value = false }
+        .collect { puppy ->
+
+          val listToBe: MutableList<Puppy> = _puppies.value?.toMutableList() ?: mutableListOf()
+          listToBe.add(puppy)
+
+          _puppies.value = listToBe
+          _puppyFlow.value = listToBe
+        }
+    }
+  }
 }
