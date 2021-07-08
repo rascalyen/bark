@@ -78,9 +78,11 @@ class BarkViewModel : ViewModel() {
   fun handleBarkEvents(event: BarkEvent) {
 
     when (event) {
+      is BarkEvent.WoofEvent -> { addOneBark() }
+
       is BarkEvent.SelectOptionEvent -> { /* Nothing to do yet */  }
 
-      is BarkEvent.WoofEvent -> { addOneBark() }
+      is BarkEvent.InitialWoofEvent -> { loadPuppiesFlowWay { barkService.getFirstThreePuppiesFlow() } }
     }
   }
 
