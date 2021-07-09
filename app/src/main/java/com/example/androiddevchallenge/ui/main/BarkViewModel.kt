@@ -8,8 +8,6 @@ import com.example.androiddevchallenge.data.BarkService
 import com.example.androiddevchallenge.data.BarkServiceImpl
 import com.example.androiddevchallenge.data.DataProvider
 import com.example.androiddevchallenge.data.model.Puppy
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -38,13 +36,13 @@ class BarkViewModel : ViewModel() {
     loadPuppiesOldWay { barkService.getAllPuppiesFlow() }
 
     //loadPuppiesFlowWay { barkService.getFirstThreePuppiesFlow() }
+    //loadPuppiesFlowWayNotSuspended { barkService.getFirstThreePuppiesFlowNotSuspended() }
 
     //handleBarkEvents(BarkEvent.InitialWoofEvent)
   }
 
-  private fun loadPuppiesOldWay(block: suspend () -> Flow<List<Puppy>>): Job {
-
-    return viewModelScope.launch {
+  private fun loadPuppiesOldWay(block: suspend () -> Flow<List<Puppy>>) =
+    viewModelScope.launch {
       try {
         _spinner.value = true
 
@@ -59,12 +57,9 @@ class BarkViewModel : ViewModel() {
         _spinner.value = false
       }
     }
-  }
 
-  @ExperimentalCoroutinesApi
-  private fun loadPuppiesFlowWay(block: suspend () -> Flow<List<Puppy>>): Job {
-
-    return viewModelScope.launch {
+  private fun loadPuppiesFlowWay(block: suspend () -> Flow<List<Puppy>>) =
+    viewModelScope.launch {
       block()
         .onStart { _spinner.value = true }
         .catch { _spinner.value = false }
@@ -74,7 +69,17 @@ class BarkViewModel : ViewModel() {
           _puppyFlow.value = it
         }
     }
-  }
+
+  private fun loadPuppiesFlowWayNotSuspended(block: () -> Flow<List<Puppy>>) =
+    block()
+      .onStart { _spinner.value = true }
+      .onEach {
+        _puppies.value = it
+        _puppyFlow.value = it
+      }
+      .catch { _spinner.value = false }
+      .onCompletion { _spinner.value = false }
+      .launchIn(viewModelScope)
 
 
   fun handleBarkEvents(event: BarkEvent) {
@@ -84,7 +89,9 @@ class BarkViewModel : ViewModel() {
 
       is BarkEvent.SelectOptionEvent -> { /* Nothing to do yet */  }
 
-      is BarkEvent.InitialWoofEvent -> { loadPuppiesFlowWay { barkService.getFirstThreePuppiesFlow() } }
+      is BarkEvent.InitialWoofEvent -> {
+        loadPuppiesFlowWay { barkService.getFirstThreePuppiesFlow() }
+      }
     }
   }
 

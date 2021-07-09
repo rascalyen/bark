@@ -1,5 +1,6 @@
 package com.example.androiddevchallenge.data
 
+import android.util.Log
 import com.example.androiddevchallenge.data.model.Puppy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -11,6 +12,8 @@ interface BarkService {
   suspend fun getAllPuppiesFlow(): Flow<List<Puppy>>
 
   suspend fun getFirstThreePuppiesFlow(): Flow<List<Puppy>>
+
+  fun getFirstThreePuppiesFlowNotSuspended(): Flow<List<Puppy>>
 
   suspend fun getRandomPuppyFlow(): Flow<Puppy>
 }
@@ -34,12 +37,20 @@ class BarkServiceImpl: BarkService {
       emit(DataProvider.puppyList)
     }
       // Returns a flow that invokes the given action before this flow starts to be collected.
-      .onStart {}
+      .onStart { Log.w("###", "onStart to get all puppies flow") }
       // Returns a flow that invokes the given action before each value of the upstream flow is emitted downstream.
       .onEach {}
       // Returns a flow that invokes the given action after the flow is completed or cancelled, passing the cancellation exception or failure as cause parameter of action.
-      .onCompletion {}
+      .onCompletion { Log.w("###", "onCompleted getting all puppies flow") }
       .flowOn(Dispatchers.IO)*/
+
+
+  override fun getFirstThreePuppiesFlowNotSuspended(): Flow<List<Puppy>> =
+    flow {
+      delay(2000)
+      emit(DataProvider.threePuppies)
+    }
+      .flowOn(Dispatchers.IO)
 
 
   override suspend fun getFirstThreePuppiesFlow(): Flow<List<Puppy>> =
