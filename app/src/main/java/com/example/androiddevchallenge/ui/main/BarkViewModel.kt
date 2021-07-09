@@ -90,7 +90,7 @@ class BarkViewModel : ViewModel() {
       is BarkEvent.SelectOptionEvent -> { /* Nothing to do yet */  }
 
       is BarkEvent.InitialWoofEvent -> {
-        loadPuppiesFlowWay { barkService.getFirstThreePuppiesFlow() }
+        loadPuppiesFlowWay { barkService.giveMeFourPuppies() }
       }
     }
   }

@@ -16,6 +16,8 @@ interface BarkService {
   fun getFirstThreePuppiesFlowNotSuspended(): Flow<List<Puppy>>
 
   suspend fun getRandomPuppyFlow(): Flow<Puppy>
+
+  suspend fun giveMeFourPuppies(): Flow<List<Puppy>>
 }
 
 /**
@@ -72,4 +74,12 @@ class BarkServiceImpl: BarkService {
     }
     /*getAllPuppiesFlow().map { puppyList -> puppyList.random() }*/
 
+
+  override suspend fun giveMeFourPuppies(): Flow<List<Puppy>> =
+    getRandomPuppyFlow().map { puppy ->
+      getFirstThreePuppiesFlow().firstOrNull()!!.toMutableList().apply { add(puppy) }
+    }
+      .onStart { Log.w("###", "Start time = " + System.currentTimeMillis()) }
+      .onCompletion { Log.w("###", "Complete time = " + System.currentTimeMillis()) }
+    // this flow takes 500 + 2000 = 2500 milliseconds
 }
